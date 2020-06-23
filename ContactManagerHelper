@@ -1,0 +1,73 @@
+({
+	doin:function(component,action){ 
+    var pageSize = component.get("v.pageSize");
+        console.log('pageSize = ' + pageSize); 
+        action.setCallback(this, function(response) {
+            var state = response.getState();
+            component.set("v.contacts", response.getReturnValue());
+            component.set("v.totalSize", component.get("v.contacts").length);
+		    component.set("v.start",0);
+			component.set("v.end",pageSize-1);
+			var paginationListcontacts = [];
+			for(var i=0; i< pageSize; i++)
+				{
+					paginationListcontacts.push(response.getReturnValue()[i]);
+				}
+			component.set('v.paginationListcontacts', paginationListcontacts);
+        });
+        $A.enqueueAction(action);
+    },
+    
+    searchProductByName: function(component, nameSegmentContact) {
+        			var action = component.get('c.nameSegmentContactBack');
+        			action.setParams({ "nameSegmentContactPar" : nameSegmentContact });
+        			action.setCallback(this, function(response) {
+            		var state = response.getState();
+            		if (state === "SUCCESS") {
+                        
+                		component.set('v.paginationListcontacts', response.getReturnValue());
+            		}
+                        else{
+                            return('v.paginationListcontacts');
+                        }
+        			});
+        			$A.enqueueAction(action);
+    },
+    
+    deletecontactt: function (component, event){
+        		var contact = event.getSource().get('v.value');
+				component.set('v.fordelete', contact );
+        		var action = component.get("c.deleteContact");
+        		var todel = component.get("v.fordelete");
+        		console.log('todel = ' + todel);
+        		action.setParams({"MydataId": todel});
+        		action.setCallback(this, function(response) {
+            		var state = response.getState();
+            		if(state === 'SUCCESS') {
+                         console.log('SUCCESS');
+                        var campings = component.get("v.paginationListcontacts");
+                				campings.push(response.getReturnValue());
+                				component.set('v.paginationListcontacts', campings);
+                        
+                  	}
+            	});
+        		$A.enqueueAction(action);
+        
+    },
+    
+    modaleditOpen: function(component, event, helper) {
+        			var modal = component.find("productEditModal");
+        			var modalBackdrop = component.find("productEditModalBackdrop");
+        			$A.util.addClass(modal,"slds-fade-in-open");
+        			$A.util.addClass(modalBackdrop,"slds-backdrop slds-backdrop_open");
+    },
+     
+    modaleditClose: function(component, event, helper) {
+        			var modal = component.find("productEditModal");
+        			var modalBackdrop = component.find("productEditModalBackdrop");
+       				$A.util.removeClass(modal,"slds-fade-in-open");
+        			$A.util.removeClass(modalBackdrop,"slds-backdrop_open");
+	},
+    
+
+})
