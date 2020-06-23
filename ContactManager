@@ -1,0 +1,152 @@
+<aura:component controller="ContactManagerCont" implements="force:appHostable,flexipage:availableForAllPageTypes,flexipage:availableForRecordHome,force:hasRecordId,forceCommunity:availableForAllPageTypes,force:lightningQuickAction" access="global">
+    <aura:attribute name="selectedLookUpRecord" type="sObject" default="{}"/>
+    <aura:attribute name="objContact" type="contact" default="{'sobjectType':'contact'}"/>
+    <aura:attribute name="contacts" type="Contact[]"/>
+    <aura:handler name="init" action="{!c.doInit}" value="{!this}" />
+    <aura:attribute name="paginationListcontacts" type="Contact[]" />
+    <aura:attribute name="pageSize" type="Integer" default="10"/>
+    <aura:attribute name="totalSize" type="Integer"/>
+    <aura:attribute name="fordelete" type="Contact"/>
+	<aura:attribute name="start" type="Integer" />
+	<aura:attribute name="end" type="Integer"/>
+    <aura:attribute name="sortDirection" type="Boolean" default="true"/>
+	<aura:attribute name="arrow" type="String" default="utility:arrowup"/>
+    <aura:attribute name="nameForSearch" type="String"/>
+  
+    <div id="search"  style="display:none;" class="search" >      
+    <div class="search1" >
+        </div>
+    </div>
+    <form class="slds-form--stacked">          
+    	<lightning:input aura:id="prodform" label="Search field" name="contactname"
+                          value="{!v.nameForSearch}"
+                             />
+        <lightning:button label="Search" 
+                              class="slds-m-top--medium"
+                              variant="brand"
+                          onclick="{!c.searchByName}"/>
+        </form>
+  
+    
+  	
+            <section class="slds-card__body">
+            <div id="list" class="row">         
+                	<table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                        <thead>
+                        	<tr class="slds-line-hight_reset" >
+                        		<th class="slds-text-title_caps" scope="col">
+                            		<div class="slds-trucate" title="Name">Name
+                                    <lightning:buttonIcon onclick="{!c.sortByName}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                        		<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Email">Email
+                                    <lightning:buttonIcon onclick="{!c.sortByEmail}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                        		<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Contact Level">Contact Level
+                                    <lightning:buttonIcon onclick="{!c.sortByLevel}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                        		<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Account">Account
+                                    <lightning:buttonIcon onclick="{!c.sortByAccount}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                        		<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Owner">Owner
+                                    <lightning:buttonIcon onclick="{!c.sortByOwner}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                            	<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Created By">Created By
+                                    <lightning:buttonIcon onclick="{!c.sortByCreated}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                                <th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title="Created Date">Created Date
+                                    <lightning:buttonIcon onclick="{!c.sortByDate}" iconName="{!v.arrow}" size="x-small" alternativeText="Order" />
+                                    </div>
+                            	</th>
+                            	<th class="slds-text-title_caps" scope="col">
+                                	<div class="slds-trucate" title=""></div>
+                            	</th>
+                        	</tr>
+        				</thead>                  
+        	<tbody>
+            	<aura:iteration items="{!v.paginationListcontacts}" var="rec" indexVar="index">
+                    <tr class="slds-hint-parent">
+                         <td data-label="Email">
+                		<a onclick="{!c.navigateToRecord}" data-index="{!index}">{!rec.Name}</a>
+                        </td>
+                        <td data-label="Email">
+                            <div class="slds-trucate" title="Email">{!rec.Email}</div>
+                        </td>
+                        <td data-label="Contact Level">
+                            <div class="slds-trucate" title="Contact Level">{!rec.Contact_Level__c}</div>
+                        </td>
+                        <td data-label="Account">
+                            <div class="slds-trucate" title="Account">{!rec.Account.Name}</div>
+                        </td>
+                        <td data-label="Owner">
+                            <div class="slds-trucate" title="Owner">{!rec.Owner.Name}</div>
+                        </td>
+                        <td data-label="Created By">
+                            <div class="slds-trucate" title="Created By">{!rec.CreatedBy.Name}</div>
+                        </td>
+                        <td data-label="Created Date">
+                            <ui:outputDateTime value="{!rec.CreatedDate}" 
+                            format="M/d/y h:m a"/>
+                        </td>
+                        <td data-label="Delete">
+                            <div class="slds-trucate" title="Delete">                          
+                                <lightning:button label="Delete" class="slds-m-top--medium" onclick="{!c.deleteprod}" iconName="utility:delete" value="{!rec}" /></div>
+                        </td>
+                        </tr>
+            </aura:iteration>
+                <lightning:button label="Previous" disabled="{!v.start == 0 }"  onclick="{!c.previous}" />
+		   	    <lightning:button label="Next" disabled="{!v.end >= v.totalSize-1}" onclick="{!c.next}" />
+		     </tbody>
+       </table>
+       </div>
+	</section> 
+    
+<div>
+    	<lightning:button label="New Contact"
+                      		class="slds-m-top--medium"
+                      		variant="brand"
+                      		onclick="{!c.openModaledit}" />
+        
+    </div>
+
+    <div class="slds-m-around_large">
+        <section aura:id="productEditModal" role="dialog" tabindex="-1" aria-labelledby="productModalHeading" aria-modal="true" aria-describedby="contactModalBody" class="slds-modal">
+            	<div class="slds-modal__container">
+                <header class="slds-modal__header">
+                    <lightning:buttonIcon class="slds-modal__close" alternativeText="Close" iconName="utility:close" onclick="{!c.closeModaledit}" variant="bare-inverse" size="large">
+                    </lightning:buttonIcon>
+                    <h2 id="productModalHeading" class="slds-text-heading_medium slds-hyphenate">Create new contact</h2>
+                </header>
+                <div class="slds-modal__content slds-p-around_medium" id="productModalBody">
+      				<lightning:input value="{!v.objContact.FirstName}" label="First Name"/>
+      				<lightning:input value="{!v.objContact.LastName}" label="Last Name" required="true"/>
+                    <lightning:input label="Email" type="email" value="{!v.objContact.Email}" required="true"/>
+                    <lightning:select name="select" label="Contact Level " value="{!v.objContact.Contact_Level__c}">
+        					<option value="Primary">Primary</option>
+        					<option value="Secondary">Secondary</option>
+        					<option value="Tertiary">Tertiary</option>
+       				</lightning:select> 
+      				<c:NewContact1 objectAPIName="account" IconName="standard:account" label="Account Name" selectedRecord="{!v.selectedLookUpRecord}"/>
+                    </div>
+                <footer class="slds-modal__footer">
+                    <lightning:button onclick="{!c.closeModaledit}" variant="neutral">Cancel</lightning:button>
+                    <lightning:button onclick="{!c.saveContactRecord}" variant="brand" >Save</lightning:button>
+                </footer>
+            </div>
+        </section>
+        <div aura:id="productEditModalBackdrop" class="slds-backdrop"></div>    
+<br/>    
+  </div> 
+
+</aura:component>
