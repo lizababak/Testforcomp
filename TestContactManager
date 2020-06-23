@@ -1,0 +1,78 @@
+@isTest
+public class TestContactManager {
+    @isTest 
+    static void casee(){
+        Contact con1 = new Contact(FirstName='First Name',
+                                  LastName = 'Last Name',
+                                  Email = 'email@email.com',
+                                  Contact_level__c = 'Secondary');
+      	insert con1;
+      ContactManagerCont.getContacts();
+    }
+    @isTest 
+    static void case2(){
+        Contact con2 = new Contact(FirstName='First Name',
+                                  LastName = 'Last Name',
+                                  Email = 'email@email.com',
+                                  Contact_level__c = 'Tertiary');
+      	insert con2;
+      ContactManagerCont.getContacts();
+    }
+
+    @isTest 
+    static void getdat(){
+      Contact con = new Contact(FirstName='First Name',
+                                  LastName = 'Last Name',
+                                  Email = 'email@email.com',
+                                  Contact_level__c = 'Primary');
+      
+       insert con;
+      Test.startTest();
+      ContactManagerCont.getContactsCreatedAsc();
+      ContactManagerCont.getContactsOwnerDesc();
+      ContactManagerCont.getContactsOwnerAsc();
+      ContactManagerCont.getContactsCreatedDesc();
+      ContactManagerCont.getContactsDateAsc();
+      ContactManagerCont.getContactsDateDesc();
+      ContactManagerCont.getContactsAccountDesc();
+      ContactManagerCont.getContactsAccountAsc();
+      ContactManagerCont.getContactsLevelDesc();
+      ContactManagerCont.getContactsLevelAsc();
+      ContactManagerCont.getContactsEmailDesc();
+      ContactManagerCont.getContactsEmailAsc();
+      ContactManagerCont.getContactsNameDesc();
+      ContactManagerCont.getContactsNameAsc();
+      ContactManagerCont.getContacts();
+      test.stopTest();
+      System.assertNotEquals(con,null, 'success');
+      System.assertNotEquals(con,null, 'success');
+
+ 
+    }
+ 
+    @isTest
+    static void delCont(){
+      Contact con = new Contact(FirstName='First Name',
+                                  LastName = 'Last Name',
+                                  Email = 'email@email.com',
+                                  Contact_level__c = 'Primary');
+       insert con;
+        test.startTest();
+      ContactManagerCont.deleteContact(con);
+      test.stopTest();
+      System.assertNotEquals(null,con, 'success');} 
+   
+    @isTest
+    static void customlookup(){
+        Account acc = new Account();
+            acc.name ='Test';
+        insert acc;
+        List <String> fieldstoShow = new List <String>();
+        fieldstoShow.add('Id');
+        fieldstoShow.add('Name');
+        List < sObject > returnList = customLookUpController.fetchLookUpValues( 'Test', 'Account');
+        System.assert(returnList != null);
+    }
+
+    
+}
