@@ -1,0 +1,238 @@
+({
+    doInit : function(component, event, helper) {
+        var action = component.get("c.getContacts");   
+        helper.doin(component, action);
+	},
+    openModaledit: function(component, event, helper) {
+        		   helper.modaleditOpen(component, event);    
+	},
+   
+    
+    closeModaledit: function(component, event, helper) {
+        			helper.modaleditClose(component, event, helper);    
+	},
+ 
+ 
+    next : function(component, event, helper){
+        var prodList = component.get("v.contacts");
+		var end = component.get("v.end");
+		var start = component.get("v.start");
+		var pageSize = component.get("v.pageSize");
+        var paginationListcontacts = [];
+		var counter = 0;
+		for(var i=end+1; i<end+pageSize+1; i++)
+			{
+				if(prodList.length > end)
+					{
+					paginationListcontacts.push(prodList[i]);
+                    
+					counter ++ ;
+					}
+			}
+		start = start + counter;  
+		end = end + counter;
+		component.set('v.paginationListcontacts', paginationListcontacts);
+		component.set("v.start",start);
+		component.set("v.end",end);
+        
+},
+
+	previous : function(component, event, helper){
+        var prodList = component.get("v.contacts");
+		var end = component.get("v.end");
+		var start = component.get("v.start");
+		var pageSize = component.get("v.pageSize");
+		var paginationListcontacts = [];
+		var counter = 0;
+		for(var i= start-pageSize; i < start ; i++)
+			{
+				if(i > -1)
+				{
+					paginationListcontacts.push(prodList[i]);
+					counter ++;     
+				}
+				else {
+					start++;
+				}
+			}
+		start = start-counter;
+		end = end-counter;
+	    component.set('v.paginationListcontacts', paginationListcontacts);
+		component.set("v.start",start);
+     	component.set("v.end",end);         	
+},
+    sortByName : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsNameAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowname", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsNameDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowname", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByEmail : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsEmailAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowemail", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsEmailDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowemail", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByLevel : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsLevelAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowlevel", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsLevelDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowlevel", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByAccount : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsAccountAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowaccount", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsAccountDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowaccount", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByOwner : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsOwnerAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowowner", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsOwnerDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowowner", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByCreated : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsCreatedAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowcreated", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsCreatedDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowcreated", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    sortByDate : function (component, event,helper) {
+        var listAccs = component.get("v.contacts");
+        var sortDirection = component.get("v.sortDirection");
+        if (sortDirection == true) {
+            var action = component.get("c.getContactsDateAsc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", false);
+            component.set("v.arrowdate", "utility:arrowdown");
+        }else {
+            var action = component.get("c.getContactsDateDesc");
+            helper.doin(component, action);
+            component.set("v.sortDirection", true);
+            component.set("v.arrowdate", "utility:arrowup");
+        }
+        component.set("v.paginationListcontacts", listAccs);
+    },
+    
+    searchByName: function(component, event, helper) {
+             var nameSegmentContact = component.get("v.nameForSearch");
+             if (nameSegmentContact==null||nameSegmentContact==undefined){
+             return('v.paginationListcontacts'); 
+             }
+             helper.searchProductByName(component, nameSegmentContact);
+             console.log('Search:' + nameSegmentContact);  
+         },
+    
+    deleteprod: function (component,event,helper) {
+       helper.deletecontactt(component, event); 
+       var action = component.get("c.getContacts");   
+       helper.doin(component, action);   
+	},
+    
+    navigateToRecord : function(component, event, helper) {
+        var idx = event.target.getAttribute('data-index');
+        var contact = component.get("v.contacts")[idx];
+        var navEvent = $A.get("e.force:navigateToSObject");
+        if(navEvent){
+            navEvent.setParams({
+                  recordId: contact.Id,
+                  slideDevName: "detail"
+            });
+            navEvent.fire(); 
+        }
+        else{
+            window.location.href = '/one/one.app#/sObject/'+contact.Id+'/view'
+        }
+    },
+    
+	saveContactRecord : function(component, event, helper) {
+        var conObj = component.get("v.objContact");
+        conObj.AccountId = null ; 
+        if(component.get("v.selectedLookUpRecord").Id != undefined){
+          conObj.AccountId = component.get("v.selectedLookUpRecord").Id;
+        } 
+      var action = component.get('c.saveContact');
+        action.setParams({
+            'con': conObj
+        })
+      action.setCallback(this, function(response) {
+        var state = response.getState();
+        if (state === "SUCCESS") {
+         alert('Record Created');
+            var action = component.get("c.getContacts");   
+        helper.doin(component, action); 
+       helper.modaleditClose(component, event, helper);
+                     component.set("v.objContact", {} );
+                     component.set("v.selectedRecord", null );   
+        }
+      });
+      $A.enqueueAction(action);
+       
+        },
+})
