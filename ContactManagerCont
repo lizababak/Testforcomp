@@ -1,0 +1,129 @@
+public class ContactManagerCont {
+@AuraEnabled 
+    public static void saveContact(Contact con){
+        insert con;
+    }
+@AuraEnabled 
+    public static List<Contact>getContacts(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                               FROM Contact];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsNameAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c, Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact
+                               ORDER BY Name ASC];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsNameDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Name DESC];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsEmailAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Email ASC];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsEmailDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Email DESC];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsLevelAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Contact_Level__c ASC];
+        return product;
+    }
+    
+    @AuraEnabled 
+    public static List<Contact>getContactsLevelDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Contact_Level__c DESC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsAccountAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Account.Name ASC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsAccountDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Account.Name DESC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsOwnerAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Owner.Name ASC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsOwnerDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY Owner.Name DESC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsCreatedAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY CreatedBy.Name ASC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsCreatedDesc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY CreatedBy.Name DESC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsDateAsc(){
+        List<Contact> product=[SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                					   FROM Contact 
+                					 ORDER BY CreatedDate ASC];
+        return product;
+    }
+    @AuraEnabled 
+    public static List<Contact>getContactsDateDesc(){
+        List<Contact> product=[SELECT Id,Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                			   FROM Contact 
+                			   ORDER BY CreatedDate DESC];
+        return product;
+    }
+    
+    @AuraEnabled
+    public static List<Contact> nameSegmentContactBack (String nameSegmentContactPar) {
+        String nameSegmentContactSoql = '%' + nameSegmentContactPar + '%';
+        return [SELECT Name,Email,Contact_Level__c,Account.Name, Owner.Name, CreatedBy.Name, CreatedDate
+                FROM Contact 
+                WHERE Name LIKE:nameSegmentContactSoql ];
+    }
+   
+    @AuraEnabled
+    public static void deleteContact (Contact MydataId) {
+        delete MydataId;
+    }
+}
